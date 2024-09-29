@@ -10,7 +10,7 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { Message } from '../types';
-import formatTimestamp from './components/time'; // Importa la nueva función
+import formatTimestamp from '../utils/time'; // Importa la nueva función
 
 const Home: React.FC = () => {
   const [message, setMessage] = useState<string>('');

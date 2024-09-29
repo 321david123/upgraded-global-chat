@@ -20,5 +20,4 @@ const formatTimestamp = (timestamp: Date | null): string => {
     
     return `${date} at ${time}`;
   };
-
-export default formatTimestamp;
+export default formatTimestamp
