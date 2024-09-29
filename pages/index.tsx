@@ -10,7 +10,7 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { Message } from '../types';
-import { formatTimestamp } from './functions/time'; // Importa la nueva función
+import formatTimestamp from './components/time'; // Importa la nueva función
 
 const Home: React.FC = () => {
   const [message, setMessage] = useState<string>('');
@@ -67,7 +67,7 @@ const Home: React.FC = () => {
       });
       console.log('Mensaje enviado con ID:', docRef.id);
       setMessage('');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error al enviar el mensaje: ', error);
       setError('Error al enviar el mensaje. Por favor, intenta nuevamente.');
     } finally {

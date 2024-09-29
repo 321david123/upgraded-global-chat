@@ -1,6 +1,6 @@
 // utils/formatTimestamp.ts
 
-export const formatTimestamp = (timestamp: Date | null): string => {
+const formatTimestamp = (timestamp: Date | null): string => {
     if (!timestamp) return '';
     
     const optionsDate: Intl.DateTimeFormatOptions = {
@@ -20,3 +20,5 @@ export const formatTimestamp = (timestamp: Date | null): string => {
     
     return `${date} at ${time}`;
   };
+
+export default formatTimestamp;
