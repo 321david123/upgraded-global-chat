@@ -8,7 +8,6 @@ import {
   orderBy,
   onSnapshot,
   serverTimestamp,
-  Timestamp,
 } from 'firebase/firestore';
 import { Message } from '../types';
 
