@@ -10,6 +10,7 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { Message } from '../types';
+
 import formatTimestamp from '../utils/time'; // Importa la nueva función
 
 const Home: React.FC = () => {
@@ -47,7 +48,9 @@ const Home: React.FC = () => {
 
     return () => unsubscribe();
   }, []);
-
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
   const sendMessage = async (e: FormEvent) => {
     e.preventDefault();
     if (message.trim() === '') {
