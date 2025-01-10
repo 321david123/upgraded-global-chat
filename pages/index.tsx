@@ -107,12 +107,12 @@ const Home: React.FC = () => {
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Escribe un mensaje..."
+          placeholder="Write anything..."
           style={styles.input}
           disabled={loading}
         />
         <button type="submit" style={styles.button} disabled={loading}>
-          {loading ? 'Enviando...' : 'Enviar'}
+          {loading ? 'Sending...' : 'Send'}
         </button>
       </form>
     </div>
