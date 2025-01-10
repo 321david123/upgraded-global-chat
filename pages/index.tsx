@@ -14,7 +14,6 @@ import {
 import { Message } from '../types';
 <link href="https://fonts.googleapis.com/css2?family=Petit+Formal+Script&display=swap" rel="stylesheet"></link>
 
-import formatTimestamp from '../utils/time'; // Importa la nueva función
 
 const Home: React.FC = () => {
   const [message, setMessage] = useState<string>('');
