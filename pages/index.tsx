@@ -8,8 +8,11 @@ import {
   orderBy,
   onSnapshot,
   serverTimestamp,
+  deleteDoc, 
+  doc
 } from 'firebase/firestore';
 import { Message } from '../types';
+<link href="https://fonts.googleapis.com/css2?family=Petit+Formal+Script&display=swap" rel="stylesheet"></link>
 
 import formatTimestamp from '../utils/time'; // Importa la nueva función
 
@@ -27,25 +30,33 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const q = query(collection(db, 'messages'), orderBy('timestamp', 'asc'));
+  
     const unsubscribe = onSnapshot(
       q,
-      (snapshot) => {
+      async (snapshot) => {
         const msgs: Message[] = snapshot.docs.map((doc) => ({
           id: doc.id,
           text: doc.data().text,
           timestamp: doc.data().timestamp?.toDate() || null,
-          userId: doc.data().userId, // Asegúrate de incluir userId si usas autenticación
         }));
+  
         setMessages(msgs);
-        console.log('Mensajes actualizados:', msgs);
         scrollToBottom();
+  
+        // Delete older messages if they exceed 100
+        if (msgs.length > 100) {
+          const excessMessages = snapshot.docs.slice(0, msgs.length - 100); // Get extra messages
+          for (const msg of excessMessages) {
+            await deleteDoc(doc(db, 'messages', msg.id)); // Delete each excess message
+          }
+        }
       },
       (error) => {
-        console.error('Error al escuchar mensajes:', error);
-        setError('Error al cargar mensajes.');
+        console.error('Error while fetching messages:', error);
+        setError('Error while loading messages.');
       }
     );
-
+  
     return () => unsubscribe();
   }, []);
   useEffect(() => {
@@ -79,8 +90,23 @@ const Home: React.FC = () => {
   };
 
   return (
+    
     <div style={styles.container}>
-      <h1>GB - test 1</h1>
+<h1
+  style={{
+    marginBottom: '10px',
+    fontSize: '3rem',
+    fontStyle: 'italic',
+    fontWeight: 'normal',
+    fontFamily: '"Petit Formal Script", cursive',
+    color: '#ffffff', // White for high contrast
+    textAlign: 'center',
+    letterSpacing: '1px',
+    textShadow: '2px 2px 5px rgba(255, 255, 255, 0.3)', // Subtle glow effect
+  }}
+>
+  Global Chat <span style={{ fontSize: '1.5rem', color: '#aaaaaa' }}>Beta 1</span>
+</h1>
       {error && <p style={styles.error}>{error}</p>}
       <div style={styles.chatBox}>
         {messages.map((msg) => {
@@ -95,7 +121,10 @@ const Home: React.FC = () => {
             >
               <p style={styles.messageText}>{msg.text}</p>
               {msg.timestamp && (
-                <span style={styles.timestamp}>{formatTimestamp(msg.timestamp)}</span>
+                <span style={styles.timestamp}>
+                {new Date(msg.timestamp).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })} ,{" "} 
+                {new Date(msg.timestamp).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: true })}
+              </span>
               )}
             </div>
           );
@@ -115,6 +144,9 @@ const Home: React.FC = () => {
           {loading ? 'Sending...' : 'Send'}
         </button>
       </form>
+      <div style={{ textAlign: 'center', fontSize: '0.9rem', color: '#888', marginTop: '20px', marginBottom: '10px' }}>
+  Only the latest 100 messages are retained. Older messages will be automatically deleted.
+</div>
     </div>
   );
 };
