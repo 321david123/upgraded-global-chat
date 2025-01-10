@@ -54,7 +54,7 @@ const Home: React.FC = () => {
   const sendMessage = async (e: FormEvent) => {
     e.preventDefault();
     if (message.trim() === '') {
-      alert('El mensaje no puede estar vacío.');
+      alert('The message cant be empty');
       return;
     }
 
